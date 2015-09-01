@@ -2,7 +2,7 @@
 /.idea
 /*.iml
 /bin/
-
+/build/
 .classpath
 *.project
 .settings

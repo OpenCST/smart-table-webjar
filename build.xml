@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE project>
+
+<project name="smart-table-webjar" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!-- Properties -->
+
+	<property environment="env" />
+
+	<property name="project.organization" value="it.csttech.webjars" />
+	<property name="project.artifactId" value="smart-table" />
+	<property name="project.version" value="2.1.3" />
+	<property name="upstream.url" value="https://raw.githubusercontent.com/OpenCST/Smart-Table" />
+
+	<target name="jar">
+		<mkdir dir="build/jar/META-INF/resources/webjars/${project.artifactId}/${project.version}" />
+
+		<property name="upstream.distUrl" value="${upstream.url}/v${project.version}/dist" />
+		<property name="build.dir" value="build/jar/META-INF/resources/webjars/${project.artifactId}/${project.version}"/>
+
+		<get src="${upstream.distUrl}/smart-table.js" dest="${build.dir}" />
+		<get src="${upstream.distUrl}/smart-table.min.js" dest="${build.dir}" />
+		<get src="${upstream.distUrl}/smart-table.min.js.map" dest="${build.dir}" />
+		<copy file="require.js" todir="${build.dir}" />
+
+		<jar compress="true" destfile="build/publish/${project.artifactId}-${project.version}.jar">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Title" value="CST Webjars" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Specification-Vendor" value="CST Technobank" />
+			</manifest>
+			<fileset dir="build/jar">
+				<include name="**/*" />
+			</fileset>
+		</jar>
+
+		<eclipse.refreshLocal depth="infinite" resource="/" />
+	</target>
+
+	<target name="ivy-release" depends="jar">
+		<property name="ivy.dep.file" value="${basedir}/dependencies.xml" />
+		<ivy:configure override="true" file="${ivy.install.dir}/ivy-settings.xml" />
+		<ivy:resolve />
+		<ivy:publish artifactspattern="${basedir}/build/publish/[artifact]-[revision].[ext]" resolver="cst" pubrevision="${project.version}" status="release" overwrite="true" />
+
+		<eclipse.refreshLocal depth="infinite" resource="/" />
+	</target>
+
+</project>
