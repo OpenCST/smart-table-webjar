@@ -12,6 +12,10 @@
 	<property name="project.version" value="2.1.3" />
 	<property name="upstream.url" value="https://raw.githubusercontent.com/OpenCST/Smart-Table" />
 
+	<target name="test">
+		<antcall target="jar" />
+	</target>
+	
 	<target name="jar">
 		<mkdir dir="build/jar/META-INF/resources/webjars/${project.artifactId}/${project.version}" />
 
@@ -35,7 +39,6 @@
 			</fileset>
 		</jar>
 
-		<eclipse.refreshLocal depth="infinite" resource="/" />
 	</target>
 
 	<target name="ivy-release" depends="jar">
