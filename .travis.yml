@@ -1,0 +1,19 @@
+language: java
+
+sudo: false
+
+install: ant deps
+
+jdk:
+  - openjdk7
+  - oraclejdk7
+  
+branches:
+  only:
+    - master
+    - /^test-.*$/
+    - /^ha-feature/
+
+scipt:
+  - ant jar
+    
